@@ -46,7 +46,7 @@ class MaxLengthCalculator:
         min_repeat, max_repeat, parsed = value
         if str(max_repeat) == 'MAXREPEAT':
             max_repeat = self._max_repeat
-        return self._calculate(parsed) * max(max_repeat, self._max_repeat)
+        return self._calculate(parsed) * max_repeat
 
     def _calculate_in(self, value):
         return 1
@@ -75,7 +75,6 @@ if __name__ == '__main__':
     print(calculate_max_length(r'ab+'))
     print(calculate_max_length(r'a{1,2}'))
     print(calculate_max_length(r'a{,2}'))
-    print(calculate_max_length(r'a{,20}'))
     print(calculate_max_length(r'(ab)+'))
     print(calculate_max_length(r'(a|b)+'))
     print(calculate_max_length(r'(aa|b)+'))
