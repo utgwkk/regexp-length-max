@@ -71,15 +71,15 @@ class MaxLengthCalculator:
         return self._cache[group]
 
 if __name__ == '__main__':
-    print(calculate_max_length(r'a'))
-    print(calculate_max_length(r'ab+'))
-    print(calculate_max_length(r'a{1,2}'))
-    print(calculate_max_length(r'a{,2}'))
-    print(calculate_max_length(r'(ab)+'))
-    print(calculate_max_length(r'(a|b)+'))
-    print(calculate_max_length(r'(aa|b)+'))
-    print(calculate_max_length(r'[^a]+'))
-    print(calculate_max_length(r'^a$'))
-    print(calculate_max_length(r'..+'))
-    print(calculate_max_length(r'(\s+)+'))
-    print(calculate_max_length(r'a|c|aaaaaaaaaaaaaaa'))
+    assert calculate_max_length(r'a') == 1
+    assert calculate_max_length(r'ab+') == 11
+    assert calculate_max_length(r'a{1,2}') == 2
+    assert calculate_max_length(r'a{,2}') == 2
+    assert calculate_max_length(r'(ab)+') == 20
+    assert calculate_max_length(r'(a|b)+') == 10
+    assert calculate_max_length(r'(aa|b)+') == 20
+    assert calculate_max_length(r'[^a]+') == 10
+    assert calculate_max_length(r'^a$') == 1
+    assert calculate_max_length(r'..+') == 11
+    assert calculate_max_length(r'(\s+)+') == 100
+    assert calculate_max_length(r'a|c|aaaaaaaaaaaaaaa') == 15
