@@ -10,6 +10,18 @@ class MaxLengthCalculator:
         self._cache = {}
         self._max_repeat = max_repeat
         self._parsed = re.sre_parse.parse(reg)
+        self._opstr_to_calculate_func = {
+            'LITERAL': self._calculate_literal,
+            'NOT_LITERAL': self._calculate_not_literal,
+            'AT': self._calculate_at,
+            'IN': self._calculate_in,
+            'ANY': self._calculate_any,
+            'BRANCH': self._calculate_branch,
+            'SUBPATTERN': self._calculate_group,
+            'MAX_REPEAT': self._calculate_repeat,
+            'MIN_REPEAT': self._calculate_repeat,
+            'GROUPREF': self._calculate_groupref,
+        }
 
     def calculate(self):
         self._cache.clear()
@@ -20,28 +32,8 @@ class MaxLengthCalculator:
         for opcode, value in parsed:
             #print(opcode, value)
             opstr = str(opcode)
-            if opstr == 'LITERAL':
-                ret += self._calculate_literal(value)
-            elif opstr == 'NOT_LITERAL':
-                ret += self._calculate_not_literal(value)
-            elif opstr == 'AT':
-                ret += self._calculate_at(value)
-            elif opstr == 'IN':
-                ret += self._calculate_in(value)
-            elif opstr == 'ANY':
-                ret += self._calculate_any(value)
-            elif opstr == 'BRANCH':
-                ret += self._calculate_branch(value)
-            elif opstr == 'SUBPATTERN':
-                ret += self._calculate_group(value)
-            elif opstr == 'MAX_REPEAT':
-                ret += self._calculate_repeat(value)
-            elif opstr == 'MIN_REPEAT':
-                ret += self._calculate_repeat(value)
-            elif opstr == 'GROUPREF':
-                ret += self._calculate_groupref(value)
-            else:
-                print(f'unimplemented: {opcode}')
+            calculate_func = self._opstr_to_calculate_func.get(opstr, lambda value: 0)
+            ret += calculate_func(value)
         return ret
 
     def _calculate_literal(self, value):
@@ -90,4 +82,4 @@ if __name__ == '__main__':
     print(calculate_max_length(r'^a$'))
     print(calculate_max_length(r'..+'))
     print(calculate_max_length(r'(\s+)+'))
-    print(calculate_max_length(r'(ab)\1+'))
+    print(calculate_max_length(r'a|c|aaaaaaaaaaaaaaa'))
